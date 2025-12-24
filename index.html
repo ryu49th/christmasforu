@@ -3,190 +3,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smooth Christmas</title>
-    <link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&display=swap" rel="stylesheet">
+    <title>Magical Christmas + Funny Santa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --sky-top: #0b1026;
+            --sky-bottom: #2b32b2;
+            --snow-white: #f0f4f8;
+            --tree-dark: #0f5035;
+            --tree-light: #4cb080;
+            --gold: #ffd700;
+        }
+
         body {
             margin: 0;
             height: 100vh;
             overflow: hidden;
-            background: linear-gradient(180deg, #020024 0%, #090979 40%, #1f4068 100%);
+            background: linear-gradient(to bottom, var(--sky-top), #4b134f 80%, #ff8c61 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-end;
-            font-family: 'Mountains of Christmas', cursive;
+            font-family: 'Cinzel', serif;
+            position: relative;
         }
 
-        /* --- Optimized Snow (GPU Accelerated) --- */
-        .snow {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 100;
-            background-image: 
-                radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 200px 400px, #eee, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 100px 200px, #eee, rgba(0,0,0,0)); 
-            background-size: 400px 400px;
-            animation: snowDrop 4s linear infinite;
-            will-change: transform; /* Hint to browser to use GPU */
+        /* --- 1. The Starry Sky --- */
+        .stars {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;
+            box-shadow: 
+                10vw 10vh 1px white, 20vw 20vh 1px white, 35vw 15vh 2px white,
+                50vw 5vh 1px white, 60vw 30vh 2px white, 70vw 10vh 1px white,
+                80vw 25vh 1px white, 90vw 5vh 2px white, 15vw 45vh 1px white,
+                5vw 80vh 1px white, 85vw 60vh 1px white;
+            animation: twinkle 5s infinite alternate; opacity: 0.6;
         }
         
-        .snow:nth-child(2) {
-            background-image: 
-                radial-gradient(3px 3px at 150px 50px, #fff, rgba(0,0,0,0)),
-                radial-gradient(3px 3px at 350px 250px, #fff, rgba(0,0,0,0));
-            background-size: 500px 500px;
-            animation-duration: 6s;
-            animation-delay: -3s;
-            opacity: 0.7;
+        .shooting-star {
+            position: absolute; top: 0; left: 50%; width: 4px; height: 4px; background: #fff; border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(255,255,255,0.1), 0 0 0 8px rgba(255,255,255,0.1), 0 0 20px rgba(255,255,255,1);
+            animation: shoot 6s linear infinite; opacity: 0;
+        }
+        .shooting-star::before {
+            content: ''; position: absolute; top: 50%; transform: translateY(-50%); width: 300px; height: 1px;
+            background: linear-gradient(90deg, #fff, transparent); right: 0;
         }
 
-        @keyframes snowDrop {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(500px); }
-        }
-
-        /* --- Moon & Santa (Translate Animation) --- */
         .moon {
-            position: absolute;
-            top: 10vh; right: 15vw;
-            width: 100px; height: 100px;
-            background: #fdfd96;
-            border-radius: 50%;
-            box-shadow: 0 0 40px rgba(253, 253, 150, 0.5); /* Lighter shadow */
+            position: absolute; top: 10%; right: 20%; width: 80px; height: 80px; background: #fff; border-radius: 50%;
+            box-shadow: 0 0 60px 20px rgba(255, 255, 255, 0.4); opacity: 0.9;
         }
 
+        /* --- 2. SANTA --- */
         .santa {
             position: absolute;
-            top: 15vh;
-            left: -100px;
-            font-size: 30px;
-            opacity: 0.8;
-            /* Use translate3d for hardware acceleration */
-            animation: flyAcross 15s linear infinite;
-            will-change: transform;
+            top: 15%; 
+            left: -150px;
+            font-size: 35px;
+            opacity: 0.9;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.6));
+            animation: flyAcross 25s linear infinite;
+            z-index: 5;
         }
-
         @keyframes flyAcross {
-            0% { transform: translate3d(-10vw, 0, 0) rotate(-5deg); }
-            100% { transform: translate3d(110vw, -20vh, 0) rotate(5deg); }
+            0% { transform: translate3d(3vw, 0, 0) rotate(-5deg); }
+            100% { transform: translate3d(120vw, -10vh, 0) rotate(5deg); }
         }
 
-        /* --- Text (Static Shadow instead of Dynamic) --- */
-        .text-container {
-            position: absolute;
-            top: 20%;
-            text-align: center;
-            z-index: 10;
+        /* --- 3. Landscape --- */
+        .mountains { position: absolute; bottom: 100px; width: 100%; height: 300px; z-index: 1; }
+        .mt {
+            position: absolute; bottom: 0; width: 0; height: 0;
+            border-left: 150px solid transparent; border-right: 150px solid transparent;
+            border-bottom: 250px solid rgba(20, 30, 60, 0.6); filter: blur(1px);
+        }
+        .mt1 { left: -50px; border-bottom-color: rgba(20, 20, 40, 0.8); transform: scale(1.5); }
+        .mt2 { left: 20%; border-bottom-width: 200px; }
+        .mt3 { right: -100px; transform: scale(2); border-bottom-color: rgba(30, 20, 50, 0.7); }
+
+        .ground {
+            position: absolute; bottom: 0; width: 100%; height: 150px;
+            background: linear-gradient(to top, #ddeeff, #fff);
+            border-radius: 100% 100% 0 0 / 100% 100% 0 0;
+            transform: scaleX(1.5); box-shadow: 0 0 50px rgba(255,255,255,0.5); z-index: 5;
         }
 
-        h1 {
-            color: #fff;
-            font-size: 5rem;
-            margin: 0;
-            text-shadow: 0 0 10px #c41e3a; /* Static glow is cheap */
+        /* --- 4. Snow --- */
+        .snow {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 100;
+            background-image: 
+                radial-gradient(3px 3px at 50px 50px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(2px 2px at 150px 250px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(4px 4px at 350px 150px, rgba(255,255,255,0.8), transparent);
+            background-size: 400px 400px; animation: fall 10s linear infinite;
         }
+        .snow.blur { filter: blur(2px); background-size: 300px 300px; animation-duration: 15s; opacity: 0.6; }
+
+        /* --- 5. Text --- */
+        .text-box { position: absolute; top: 15%; text-align: center; z-index: 50; animation: floatText 3s ease-in-out infinite; }
+        h1 { font-family: 'Great Vibes', cursive; font-size: 6rem; color: #fff; margin: 0; text-shadow: 0 0 20px #ff9de2, 0 0 40px #ff9de2; letter-spacing: 2px; }
+        h2 { font-size: 1.5rem; color: #ffdab9; letter-spacing: 5px; margin-top: -10px; text-transform: uppercase; text-shadow: 0 0 10px rgba(0,0,0,0.5); }
         
-        h2 {
-            color: #ffd700;
-            font-size: 2.5rem;
-            margin: 0;
+        /* --- NEW: FUNNY HO HO HO --- */
+        .Ho {
+            margin-top: 20px;
+            font-size: 3rem;
+            color: #ff3333;
+            /* Funny font fallbacks */
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif; 
+            text-shadow: 2px 2px 0px #fff;
+            display: block; /* Allows transform to work properly */
+            
+            /* The "Belly Laugh" Jelly Animation */
+            animation: bellyLaugh 0.8s infinite;
         }
 
-        /* --- The Tree (No Filters, Just Borders) --- */
-        .tree {
-            position: relative;
-            margin-bottom: 50px;
-            width: 0; height: 0;
-            /* Removed drop-shadow filter */
+        @keyframes bellyLaugh {
+            0%   { transform: scale(1, 1) rotate(0deg); }
+            25%  { transform: scale(1.1, 0.9) rotate(-5deg); }
+            50%  { transform: scale(0.9, 1.1) rotate(5deg); }
+            75%  { transform: scale(1.1, 0.9) rotate(-5deg); }
+            100% { transform: scale(1, 1) rotate(0deg); }
         }
 
-        .layer {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0; height: 0;
-            border-left: 50px solid transparent;
-            border-right: 50px solid transparent;
-            border-bottom: 70px solid #116b28;
+        /* --- 6. Tree --- */
+        .tree-container { position: relative; z-index: 10; bottom: 40px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.3)); }
+        .branch {
+            position: absolute; left: 50%; transform: translateX(-50%); width: 200px; height: 180px;
+            background: linear-gradient(135deg, var(--tree-dark) 0%, var(--tree-light) 100%);
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%); box-shadow: inset 0 -10px 20px rgba(0,0,0,0.3);
         }
-
-        .l1 { bottom: 120px; border-width: 0 40px 60px 40px; border-bottom-color: #1a8a35; z-index: 3; }
-        .l2 { bottom: 80px; border-width: 0 55px 80px 55px; border-bottom-color: #147a2d; z-index: 2; }
-        .l3 { bottom: 30px; border-width: 0 70px 100px 70px; border-bottom-color: #0e6b25; z-index: 1; }
-
-        .trunk {
-            position: absolute;
-            bottom: 0; left: 50%;
-            transform: translateX(-50%);
-            width: 30px; height: 40px;
-            background: #4a3728;
-        }
-
-        .star {
-            position: absolute;
-            bottom: 170px; left: 50%;
-            transform: translateX(-50%);
-            color: #ffd700;
-            font-size: 40px;
-            animation: pulse 2s infinite;
-        }
-
-        /* Optimized Lights (Box-shadow is cheaper on small static elements) */
-        .light {
-            position: absolute;
-            width: 8px; height: 8px;
-            border-radius: 50%;
-            background: white;
-            animation: flash 1s steps(2) infinite; /* steps(2) saves calculation */
-        }
+        .branch::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 10px, rgba(255,255,255,0.9) 0%, transparent 10%); z-index: 2; }
         
-        .light.red { background: #ff3333; box-shadow: 0 0 5px #ff3333; animation-delay: 0s; }
-        .light.gold { background: #ffd700; box-shadow: 0 0 5px #ffd700; animation-delay: 0.5s; }
+        .b1 { bottom: 120px; width: 140px; height: 120px; z-index: 3; filter: brightness(1.1); }
+        .b2 { bottom: 70px; width: 180px; height: 150px; z-index: 2; filter: brightness(1); }
+        .b3 { bottom: 0px; width: 240px; height: 180px; z-index: 1; filter: brightness(0.9); }
+        .trunk { position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); width: 40px; height: 50px; background: linear-gradient(to right, #3e2723, #5d4037); border-radius: 5px; z-index: 0; }
+
+        .orb {
+            position: absolute; width: 12px; height: 12px; border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #fff, red); box-shadow: 0 0 10px red;
+            z-index: 4; animation: glow 2s infinite alternate;
+        }
+        .gold { background: radial-gradient(circle at 30% 30%, #fff, var(--gold)); box-shadow: 0 0 10px var(--gold); }
+        .blue { background: radial-gradient(circle at 30% 30%, #fff, #00d2ff); box-shadow: 0 0 10px #00d2ff; }
         
-        @keyframes pulse { 0%, 100% { opacity: 1; scale: 1; } 50% { opacity: 0.8; scale: 1.1; } }
-        @keyframes flash { 0% { opacity: 1; } 50% { opacity: 0.5; } }
-        
-        /* Decoration positions relative to layers */
-        .d1 { bottom: 130px; left: -10px; }
-        .d2 { bottom: 140px; left: 10px; }
-        .d3 { bottom: 90px; left: -20px; }
-        .d4 { bottom: 100px; left: 20px; }
-        .d5 { bottom: 50px; left: -30px; }
-        .d6 { bottom: 60px; left: 30px; }
-        .d7 { bottom: 45px; left: 0px; }
+        .o1 { bottom: 150px; margin-left: -20px; animation-delay: 0s; }
+        .o2 { bottom: 160px; margin-left: 15px; animation-delay: 0.5s; }
+        .o3 { bottom: 100px; margin-left: -40px; animation-delay: 1s; }
+        .o4 { bottom: 110px; margin-left: 30px; animation-delay: 0.2s; }
+        .o5 { bottom: 40px; margin-left: -60px; animation-delay: 1.5s; }
+        .o6 { bottom: 50px; margin-left: 50px; animation-delay: 0.8s; }
+        .o7 { bottom: 30px; margin-left: 0px; animation-delay: 1.2s; }
+
+        .top-star {
+            position: absolute; bottom: 210px; left: 50%; transform: translateX(-50%);
+            font-size: 50px; color: var(--gold); filter: drop-shadow(0 0 15px var(--gold));
+            animation: spinStar 10s linear infinite; z-index: 10;
+        }
+
+        /* --- 7. Snowman --- */
+        .snowman { position: absolute; bottom: 20px; right: 20vw; z-index: 15; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2)); }
+        .s-ball { background: radial-gradient(circle at 30% 30%, #fff, #ddd); border-radius: 50%; position: absolute; left: 50%; transform: translateX(-50%); }
+        .sb1 { width: 30px; height: 30px; bottom: 55px; z-index: 3; }
+        .sb2 { width: 45px; height: 45px; bottom: 25px; z-index: 2; }
+        .sb3 { width: 60px; height: 60px; bottom: -15px; z-index: 1; }
+        .scarf { position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); width: 40px; height: 10px; background: #d63031; border-radius: 5px; z-index: 4; }
+        .scarf::after { content: ''; position: absolute; right: 5px; top: 0; width: 10px; height: 30px; background: #d63031; transform: rotate(10deg); }
+
+        @keyframes twinkle { 0% { opacity: 0.3; } 100% { opacity: 0.8; } }
+        @keyframes fall { 0% { background-position: 0 0; } 100% { background-position: 0 400px; } }
+        @keyframes glow { from { filter: brightness(1); } to { filter: brightness(1.5); } }
+        @keyframes spinStar { 0% { transform: translateX(-50%) rotate(0deg); } 100% { transform: translateX(-50%) rotate(360deg); } }
+        @keyframes shoot { 0% { transform: translateX(100vw) translateY(0) rotate(-45deg); opacity: 1; } 20% { transform: translateX(50vw) translateY(50vh) rotate(-45deg); opacity: 0; } 100% { transform: translateX(50vw) translateY(50vh) rotate(-45deg); opacity: 0; } }
+        @keyframes floatText { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
     </style>
 </head>
 <body>
 
-    <div class="snow"></div>
-    <div class="snow"></div>
-
+    <div class="stars"></div>
+    <div class="shooting-star"></div>
     <div class="moon"></div>
+
     <div class="santa">🎅🛷🦌</div>
 
-    <div class="text-container">
-        <h1>Merry Christmas</h1>
-        <h2>Ho Ho Ho!</h2>
+    <div class="mountains">
+        <div class="mt mt1"></div>
+        <div class="mt mt2"></div>
+        <div class="mt mt3"></div>
     </div>
 
-    <div class="tree">
-        <div class="star">★</div>
-        <div class="layer l1"></div>
-        <div class="layer l2"></div>
-        <div class="layer l3"></div>
+    <div class="snow"></div>
+    <div class="snow blur"></div>
+
+    <div class="text-box">
+        <h1>Merry Christmas</h1>
+        <h2>To You & Yours</h2>
+        <h2 class="Ho">Ho Ho Ho!</h2>
+    </div>
+
+    <div class="ground"></div>
+
+    <div class="tree-container">
+        <div class="top-star">✦</div>
+        <div class="branch b1"></div>
+        <div class="branch b2"></div>
+        <div class="branch b3"></div>
         <div class="trunk"></div>
 
-        <div class="light red d1"></div>
-        <div class="light gold d2"></div>
-        <div class="light gold d3"></div>
-        <div class="light red d4"></div>
-        <div class="light red d5"></div>
-        <div class="light gold d6"></div>
-        <div class="light red d7"></div>
+        <div class="orb o1"></div>
+        <div class="orb gold o2"></div>
+        <div class="orb blue o3"></div>
+        <div class="orb gold o4"></div>
+        <div class="orb o5"></div>
+        <div class="orb blue o6"></div>
+        <div class="orb gold o7"></div>
+    </div>
+
+    <div class="snowman">
+        <div class="s-ball sb1"></div>
+        <div class="s-ball sb2"></div>
+        <div class="s-ball sb3"></div>
+        <div class="scarf"></div>
     </div>
 
 </body>
