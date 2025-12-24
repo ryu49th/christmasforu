@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Magical Christmas + Sound Fixed</title>
+    <title>Magical Christmas + Beautiful Snowman</title>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* --- CSS เหมือนเดิม --- */
+        /* --- CSS เดิม --- */
         :root {
             --sky-top: #0b1026;
             --sky-bottom: #2b32b2;
@@ -14,6 +14,8 @@
             --tree-dark: #0f5035;
             --tree-light: #4cb080;
             --gold: #ffd700;
+            --carrot: #ff7f00;
+            --coal: #2d3436;
         }
 
         body {
@@ -157,19 +159,169 @@
             font-size: 50px; color: var(--gold); filter: drop-shadow(0 0 15px var(--gold));
             animation: spinStar 10s linear infinite; z-index: 10;
         }
-        .snowman { position: absolute; bottom: 20px; right: 20vw; z-index: 15; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2)); }
-        .s-ball { background: radial-gradient(circle at 30% 30%, #fff, #ddd); border-radius: 50%; position: absolute; left: 50%; transform: translateX(-50%); }
-        .sb1 { width: 30px; height: 30px; bottom: 55px; z-index: 3; }
-        .sb2 { width: 45px; height: 45px; bottom: 25px; z-index: 2; }
-        .sb3 { width: 60px; height: 60px; bottom: -15px; z-index: 1; }
-        .scarf { position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); width: 40px; height: 10px; background: #d63031; border-radius: 5px; z-index: 4; }
-        .scarf::after { content: ''; position: absolute; right: 5px; top: 0; width: 10px; height: 30px; background: #d63031; transform: rotate(10deg); }
         @keyframes twinkle { 0% { opacity: 0.3; } 100% { opacity: 0.8; } }
         @keyframes fall { 0% { background-position: 0 0; } 100% { background-position: 0 400px; } }
         @keyframes glow { from { filter: brightness(1); } to { filter: brightness(1.5); } }
         @keyframes spinStar { 0% { transform: translateX(-50%) rotate(0deg); } 100% { transform: translateX(-50%) rotate(360deg); } }
         @keyframes shoot { 0% { transform: translateX(100vw) translateY(0) rotate(-45deg); opacity: 1; } 20% { transform: translateX(50vw) translateY(50vh) rotate(-45deg); opacity: 0; } 100% { transform: translateX(50vw) translateY(50vh) rotate(-45deg); opacity: 0; } }
         @keyframes floatText { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        /* -------------------- */
+        /* --- New Snowman CSS --- */
+        /* -------------------- */
+        .snowman {
+            position: absolute;
+            bottom: 25px;
+            right: 22vw; /* ขยับเข้ามาหน่อย */
+            z-index: 15;
+            filter: drop-shadow(0 8px 10px rgba(0,0,0,0.3));
+            animation: snowmanWobble 4s ease-in-out infinite;
+        }
+
+        /* ก้อนหิมะ - เพิ่ม Texture และเงา */
+        .s-ball {
+            background: radial-gradient(circle at 30% 30%, #fff 50%, #e6f0ff 90%);
+            border-radius: 50%;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: inset 0 -5px 10px rgba(0,0,100,0.1);
+        }
+        .sb1 { width: 36px; height: 36px; bottom: 62px; z-index: 3; } /* หัวใหญ่ขึ้นนิดนึง */
+        .sb2 { width: 50px; height: 48px; bottom: 28px; z-index: 2; }
+        .sb3 { width: 70px; height: 65px; bottom: -20px; z-index: 1; }
+
+        /* ตาถ่าน */
+        .eye {
+            position: absolute;
+            width: 4px; height: 4px;
+            background: var(--coal);
+            border-radius: 50%;
+            top: 12px;
+        }
+        .eye.l { left: 10px; }
+        .eye.r { right: 10px; }
+
+        /* จมูกแครอท 🥕 */
+        .carrot-nose {
+            position: absolute;
+            top: 16px; left: 50%;
+            width: 12px; height: 6px;
+            background: var(--carrot);
+            clip-path: polygon(0 0, 100% 50%, 0 100%); /* รูปทรงสามเหลี่ยม */
+            transform: translateX(-50%);
+        }
+
+        /* ปากยิ้มจากถ่าน */
+        .smile span {
+            position: absolute;
+            width: 3px; height: 3px;
+            background: var(--coal);
+            border-radius: 50%;
+            top: 24px;
+        }
+        .smile span:nth-child(1) { left: 8px; transform: translateY(-1px); }
+        .smile span:nth-child(2) { left: 13px; }
+        .smile span:nth-child(3) { left: 18px; }
+        .smile span:nth-child(4) { left: 23px; transform: translateY(-1px); }
+
+        /* ผ้าพันคอ (ปรับให้ดูพริ้ว) */
+        .scarf {
+            position: absolute;
+            bottom: 58px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 44px; height: 12px;
+            background: #d63031;
+            border-radius: 10px;
+            z-index: 4;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        .scarf::after {
+            content: '';
+            position: absolute;
+            right: 5px;
+            top: 6px;
+            width: 14px; height: 35px;
+            background: #d63031;
+            transform: rotate(15deg);
+            border-radius: 0 0 5px 5px;
+            animation: scarfWave 3s ease-in-out infinite;
+            transform-origin: top;
+        }
+
+        /* กระดุมถ่านที่ตัว */
+        .buttons span {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 5px; height: 5px;
+            background: var(--coal);
+            border-radius: 50%;
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.5);
+        }
+        .buttons span:nth-child(1) { bottom: 45px; z-index: 3; }
+        .buttons span:nth-child(2) { bottom: 30px; z-index: 3; }
+        .buttons span:nth-child(3) { bottom: 10px; z-index: 5; }
+
+        /* แขนกิ่งไม้ */
+        .arm {
+            position: relative  ;
+            width: 35px; height: 3px;
+            background: #5d4037;
+            bottom: -20px;
+            z-index: 1;
+        }
+        .arm.l { left: -25px; transform: rotate(-20deg); }
+        .arm.r { right: -45px; transform: rotate(20deg); }
+        /* กิ่งย่อย */
+        .arm::before { content: ''; position: absolute; width: 10px; height: 2px; background: #5d4037; top: -4px; }
+        .arm.l::before { left: 5px; transform: rotate(-30deg); }
+        .arm.r::before { right: 5px; transform: rotate(30deg); }
+
+        /* หมวกทรงสูง (Top Hat) 🎩 */
+        .top-hat {
+            position: relative;
+            top: -95px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+        .hat-brim {
+            width: 40px; height: 6px; background: #2d3436;
+            border-radius: 3px;
+            position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+        }
+        .hat-top {
+            width: 24px; height: 20px; background: #2d3436;
+            position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%);
+        }
+        .hat-band {
+            width: 24px; height: 4px; background: #c0392b;
+            position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+        }
+
+        /* เงาใต้ตุ๊กตาหิมะ */
+        .snowman-shadow {
+            position: absolute;
+            bottom: -25px; left: 50%; transform: translateX(-50%);
+            width: 70px; height: 20px;
+            background: rgba(0,0,50,0.2);
+            border-radius: 50%;
+            filter: blur(5px); z-index: 0;
+        }
+
+        /* Animation เสริม */
+        @keyframes snowmanWobble {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(1deg); }
+            75% { transform: rotate(-1deg); }
+        }
+        @keyframes scarfWave {
+            0%, 100% { transform: rotate(-10deg); }
+            50% { transform: rotate(50deg); }
+        }
+
     </style>
 </head>
 <body>
@@ -185,33 +337,26 @@
     <div class="stars"></div>
     <div class="shooting-star"></div>
     <div class="moon"></div>
-
     <div class="santa">🎅🛷🦌</div>
-
     <div class="mountains">
         <div class="mt mt1"></div>
         <div class="mt mt2"></div>
         <div class="mt mt3"></div>
     </div>
-
     <div class="snow"></div>
     <div class="snow blur"></div>
-
     <div class="text-box">
         <h1>Merry Christmas</h1>
         <h2>To You & Yours</h2>
         <h2 class="Ho">Ho Ho Ho!</h2>
     </div>
-
     <div class="ground"></div>
-
     <div class="tree-container">
         <div class="top-star">✦</div>
         <div class="branch b1"></div>
         <div class="branch b2"></div>
         <div class="branch b3"></div>
         <div class="trunk"></div>
-
         <div class="orb o1"></div>
         <div class="orb gold o2"></div>
         <div class="orb blue o3"></div>
@@ -222,23 +367,47 @@
     </div>
 
     <div class="snowman">
-        <div class="s-ball sb1"></div>
-        <div class="s-ball sb2"></div>
-        <div class="s-ball sb3"></div>
+        <div class="top-hat">
+            <div class="hat-top"></div>
+            <div class="hat-band"></div>
+            <div class="hat-brim"></div>
+        </div>
+        
+        <div class="s-ball sb1">
+            <div class="eye l"></div>
+            <div class="eye r"></div>
+            <div class="carrot-nose"></div>
+            <div class="smile">
+                <span></span><span></span><span></span><span></span>
+            </div>
+        </div>
+        
         <div class="scarf"></div>
-    </div>
+        
+        <div class="s-ball sb2">
+            <div class="arm l"></div>
+            <div class="arm r"></div>
+        </div>
 
+        <div class="s-ball sb3"></div>
+
+        <div class="buttons">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <div class="snowman-shadow"></div>
+    </div>
     <script>
+        // ... (Script เหมือนเดิม) ...
         function toggleMusic() {
             var audio = document.getElementById("bgm");
             var btn = document.querySelector(".music-btn");
             var icon = document.getElementById("icon");
-
-            // เช็คว่าโหลดไฟล์เสียงได้ไหม
             audio.onerror = function() {
                 alert("ขออภัย ไฟล์เพลงโหลดไม่ได้ (อาจโดนบล็อก) ลองเปิดในคอมพิวเตอร์ หรือใช้ไฟล์ Local แทนครับ");
             };
-
             if (audio.paused) {
                 audio.play()
                 .then(() => {
@@ -247,7 +416,6 @@
                 })
                 .catch(error => {
                     console.log("Audio Play Error: " + error);
-                    // ถ้ายังไม่ได้ จะแจ้งเตือนให้กดใหม่
                     alert("Browser บล็อกเสียงอยู่ ลองกดปุ่มอีกทีนะครับ");
                 });
             } else {
