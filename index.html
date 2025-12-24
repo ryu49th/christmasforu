@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Magical Christmas with Music</title>
+    <title>Magical Christmas + Sound Fixed</title>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* --- CSS เดิม (ไม่เปลี่ยน) --- */
+        /* --- CSS เหมือนเดิม --- */
         :root {
             --sky-top: #0b1026;
             --sky-bottom: #2b32b2;
@@ -29,7 +29,7 @@
             position: relative;
         }
 
-        /* --- Music Button Style (ใหม่) --- */
+        /* --- Music Button Style --- */
         .music-btn {
             position: fixed;
             top: 20px; left: 20px;
@@ -47,13 +47,11 @@
             transition: all 0.3s;
             display: flex; align-items: center; gap: 10px;
             box-shadow: 0 0 15px rgba(255,255,255,0.2);
-            outline: none;
         }
         .music-btn:hover {
             background: #fff;
             color: #0b1026;
             transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(255,255,255,0.5);
         }
         .music-btn:active { transform: scale(0.95); }
 
@@ -116,7 +114,6 @@
         .text-box { position: absolute; top: 15%; text-align: center; z-index: 50; animation: floatText 3s ease-in-out infinite; }
         h1 { font-family: 'Great Vibes', cursive; font-size: 6rem; color: #fff; margin: 0; text-shadow: 0 0 20px #ff9de2, 0 0 40px #ff9de2; letter-spacing: 2px; }
         h2 { font-size: 1.5rem; color: #ffdab9; letter-spacing: 5px; margin-top: -10px; text-transform: uppercase; text-shadow: 0 0 10px rgba(0,0,0,0.5); }
-        
         .Ho {
             margin-top: 20px; font-size: 3rem; color: #ff3333;
             font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif; 
@@ -130,7 +127,6 @@
             75%  { transform: scale(1.1, 0.9) rotate(-5deg); }
             100% { transform: scale(1, 1) rotate(0deg); }
         }
-
         .tree-container { position: relative; z-index: 10; bottom: 40px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.3)); }
         .branch {
             position: absolute; left: 50%; transform: translateX(-50%); width: 200px; height: 180px;
@@ -142,7 +138,6 @@
         .b2 { bottom: 70px; width: 180px; height: 150px; z-index: 2; filter: brightness(1); }
         .b3 { bottom: 0px; width: 240px; height: 180px; z-index: 1; filter: brightness(0.9); }
         .trunk { position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); width: 40px; height: 50px; background: linear-gradient(to right, #3e2723, #5d4037); border-radius: 5px; z-index: 0; }
-        
         .orb {
             position: absolute; width: 12px; height: 12px; border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, #fff, red); box-shadow: 0 0 10px red;
@@ -157,7 +152,6 @@
         .o5 { bottom: 40px; margin-left: -60px; animation-delay: 1.5s; }
         .o6 { bottom: 50px; margin-left: 50px; animation-delay: 0.8s; }
         .o7 { bottom: 30px; margin-left: 0px; animation-delay: 1.2s; }
-
         .top-star {
             position: absolute; bottom: 210px; left: 50%; transform: translateX(-50%);
             font-size: 50px; color: var(--gold); filter: drop-shadow(0 0 15px var(--gold));
@@ -170,7 +164,6 @@
         .sb3 { width: 60px; height: 60px; bottom: -15px; z-index: 1; }
         .scarf { position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); width: 40px; height: 10px; background: #d63031; border-radius: 5px; z-index: 4; }
         .scarf::after { content: ''; position: absolute; right: 5px; top: 0; width: 10px; height: 30px; background: #d63031; transform: rotate(10deg); }
-        
         @keyframes twinkle { 0% { opacity: 0.3; } 100% { opacity: 0.8; } }
         @keyframes fall { 0% { background-position: 0 0; } 100% { background-position: 0 400px; } }
         @keyframes glow { from { filter: brightness(1); } to { filter: brightness(1.5); } }
@@ -182,7 +175,7 @@
 <body>
 
     <audio id="bgm" loop>
-        <source src="https://upload.wikimedia.org/wikipedia/commons/transcoded/6/61/Kevin_MacLeod_-_Jingle_Bells.oga/Kevin_MacLeod_-_Jingle_Bells.oga.mp3" type="audio/mpeg">
+        <source src="dogChristmas.mp3" type="audio/mpeg">
     </audio>
 
     <button class="music-btn" onclick="toggleMusic()">
@@ -241,14 +234,26 @@
             var btn = document.querySelector(".music-btn");
             var icon = document.getElementById("icon");
 
+            // เช็คว่าโหลดไฟล์เสียงได้ไหม
+            audio.onerror = function() {
+                alert("ขออภัย ไฟล์เพลงโหลดไม่ได้ (อาจโดนบล็อก) ลองเปิดในคอมพิวเตอร์ หรือใช้ไฟล์ Local แทนครับ");
+            };
+
             if (audio.paused) {
-                audio.play();
-                btn.innerHTML = '<span id="icon">🔊</span> Pause Music';
-                btn.style.borderColor = "#00ff00"; // Green border when playing
+                audio.play()
+                .then(() => {
+                    btn.innerHTML = '<span id="icon">🔊</span> Pause Music';
+                    btn.style.borderColor = "#00ff00";
+                })
+                .catch(error => {
+                    console.log("Audio Play Error: " + error);
+                    // ถ้ายังไม่ได้ จะแจ้งเตือนให้กดใหม่
+                    alert("Browser บล็อกเสียงอยู่ ลองกดปุ่มอีกทีนะครับ");
+                });
             } else {
                 audio.pause();
                 btn.innerHTML = '<span id="icon">🎵</span> Play Music';
-                btn.style.borderColor = "rgba(255, 255, 255, 0.5)"; // Revert border
+                btn.style.borderColor = "rgba(255, 255, 255, 0.5)";
             }
         }
     </script>
